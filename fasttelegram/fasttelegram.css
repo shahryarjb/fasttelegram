@@ -1,0 +1,15 @@
+div.rating {
+    display: block;
+    float: left;
+    padding-right: 10px;
+}
+div.rating table tr td {
+    margin: 1px !important;
+    padding: 2px !important;
+}
+div.rating table tr.row0  {
+	background-color:#efefef;
+}
+div.rating table tr.row1 {
+	background-color:#ffffff;
+}
