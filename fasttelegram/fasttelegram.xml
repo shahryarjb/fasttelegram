@@ -17,12 +17,6 @@
 					default=""
 			/>
 			<field
-					name="pic"
-					type="media"
-					label="COM_TELEGRAM_MEDIA_LABEL"
-					description=""
-			/>
-			<field
 					name="url"
 					type="text"
 					label="COM_TELEGRAM_URL_LABEL"

@@ -85,17 +85,11 @@ class plgContentFasttelegram extends JPlugin
 		for($i = 0; $i < 10; $i++) {
             if(isset($varDB[$i]["message"])) {
 				 if($article->id == $varDB[$i]["article_id"]) {
-					 
-			    //check mod_rewrite
-				$isEnabled = in_array('mod_rewrite', apache_get_modules());
-				echo ($isEnabled) ? 'Enabled' : 'Not enabled';
 
-
-					
 				$article->text = $varDB[$i]["message"]. $article->text;
 				$token = $this->params->get('token');
 				$channel_id = $this->params->get('channel_id');
-				$link = JURI::root().$article->id; 
+				$link = JURI::root()."index.php/".$article->id; 
 				$link = preg_replace('#^http?://#', '', $link);
 				$linkk = "http://www." . $link;
 				//$link = "http://www.localhost/joomla3/index.php/60";
