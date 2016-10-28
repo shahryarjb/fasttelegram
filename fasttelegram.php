@@ -43,9 +43,6 @@ class plgContentFasttelegram extends JPlugin
 					if($key == "message") {
 						$message = $value;
 					}
-					if($key == "pic") {
-						$pic = $value;
-					}
 					if($key == "url") {
 						$url = $value;
 					}
@@ -54,7 +51,7 @@ class plgContentFasttelegram extends JPlugin
 		}	
 		if(isset($message)) {
 					$db = JFactory::getDbo();
-					$db->setQuery("INSERT INTO #__telegram SET message='" .$message. "',pic='" . $pic."',article_id=" . $data->id . ",url='" . $url . "'");
+					$db->setQuery("INSERT INTO #__telegram SET message='" .$message."',article_id=" . $data->id . ",url='" . $url . "'");
 					$db->execute();
 				} // end if
 
@@ -94,13 +91,9 @@ class plgContentFasttelegram extends JPlugin
 				$linkk = "http://www." . $link;
 				//$link = "http://www.localhost/joomla3/index.php/60";
 				$bot = new telegram_bot($token);
-				if($varDB[$i]["pic"] == null && $varDB[$i]["url"] == null){
+				if($varDB[$i]["url"] == null){
 					$bot->send_message($channel_id,$varDB[$i]["message"]. "  ".$linkk);
-					//$bot-> open_url($channel_id,$link);
 					
-				}
-				if(isset($varDB[$i]["pic"])) {
-					$bot->send_photo($channel_id,JURI::root().$varDB[$i]["pic"],$varDB[$i]["message"]);
 				}
 				if(isset($varDB[$i]["url"])) {
 					$bot->send_photo($channel_id,$varDB[$i]["url"],$varDB[$i]["message"]);
