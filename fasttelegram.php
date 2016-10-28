@@ -85,13 +85,24 @@ class plgContentFasttelegram extends JPlugin
 		for($i = 0; $i < 10; $i++) {
             if(isset($varDB[$i]["message"])) {
 				 if($article->id == $varDB[$i]["article_id"]) {
-					  $p = JURI::root().$varDB[$i]["pic"];
-				$article->text = $varDB[$i]["message"]. $article->text.$p;
-				$token = "286077226:AAFw7lRchn_aDouZOT9JGbLmuneG6ep7pYo";
-				$channel_id = "@testmina";
+					 
+			    //check mod_rewrite
+				$isEnabled = in_array('mod_rewrite', apache_get_modules());
+				echo ($isEnabled) ? 'Enabled' : 'Not enabled';
+
+
+					
+				$article->text = $varDB[$i]["message"]. $article->text;
+				$token = $this->params->get('token');
+				$channel_id = $this->params->get('channel_id');
+				$link = JURI::root().$article->id; 
+				$link = preg_replace('#^http?://#', '', $link);
+				$linkk = "http://www." . $link;
+				//$link = "http://www.localhost/joomla3/index.php/60";
 				$bot = new telegram_bot($token);
 				if($varDB[$i]["pic"] == null && $varDB[$i]["url"] == null){
-					$bot->send_message($channel_id,$varDB[$i]["message"]);
+					$bot->send_message($channel_id,$varDB[$i]["message"]. "  ".$linkk);
+					//$bot-> open_url($channel_id,$link);
 					
 				}
 				if(isset($varDB[$i]["pic"])) {
@@ -113,3 +124,7 @@ class plgContentFasttelegram extends JPlugin
 		//}
 	}
 }
+
+
+//$token = "286077226:AAFw7lRchn_aDouZOT9JGbLmuneG6ep7pYo";
+//				$channel_id = "@testmina";

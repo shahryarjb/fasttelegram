@@ -20,10 +20,16 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field
-					name="ratingclass_sfx"
+					name="token"
 					type="text"
-					label="PLG_CONTENT_RATING_ITEM_FIELD_RATING_CLASS_LABEL"
-					description="PLG_CONTENT_RATING_ITEM_FIELD_RATING_CLASS_DESC"
+					label="PLG_FASTTELEGRAM_TOKEN_LABEL"
+					description="PLG_FASTTELEGRAM_TOKEN_LABEL"
+					/>
+					<field
+					name="channel_id"
+					type="text"
+					label="PLG_FASTTELEGRAM_CHANNEL_ID_LABEL"
+					description="PLG_FASTTELEGRAM_CHANNEL_ID_LABEL"
 					/>
 			</fieldset>
 		</fields>

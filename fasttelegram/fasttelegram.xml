@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form enctype="multipart/form-data">
 	<fields name="attribs">
 
 		<fieldset name="attribs" label="PLG_CONTENT_CROCODILECONTENT_SLIDER_LABEL">
