@@ -60,9 +60,10 @@ class plgContentFasttelegram extends JPlugin
 		 		//send to telegram
 			           if ($count != null) {		           
 				 	require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
-					$channel_id = "@testtrangell";
-					$token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
-
+					// $channel_id = "@testtrangell";
+					// $token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
+					$token = $this->params->get('token');
+					$channel_id = $this->params->get('channel_id');
 					$bot = new telegram_bot($token);
 					$testlink = JURI::current();
 					if (!empty($count[4])) {
