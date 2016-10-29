@@ -125,7 +125,8 @@ class plgContentFasttelegram extends JPlugin
 				$fields = array(
 					$db->qn('message') . ' = ' . $db->q($test['message']),
 					$db->qn('url') . ' = ' . $db->q($test['url']),
-					$db->qn('published') . ' = ' . $db->q($publish)
+					//$db->qn('published') . ' = ' . $db->q($publish)
+					$db->qn('published') . ' =  1'
 				);
 				$conditions = array($db->qn('article_id') . ' = '. $db->q($articleId));
 				$query->update($db->qn('#__telegram'));
