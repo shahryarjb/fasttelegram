@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="rating">
+		<fieldset name="rating" label="PLG_CONTENT_RATING_SLIDER_LABEL">
+			<field
+				name="message"
+				type="text"
+				id="message"
+				description="PLG_CONTENT_RATING_FIELD_TEXTURE_DESC"
+				label="message"
+				message="PLG_CONTENT_RATING_FIELD_TEXTURE_MESSAGE"
+				size="30"
+			/>
+			<field
+				name="url"
+				type="text"
+				id="url"
+				description="PLG_CONTENT_RATING_FIELD_TEMPERATURE_DESC"
+				label="url"
+				message="PLG_CONTENT_RATING_FIELD_TEMPERATURE_MESSAGE"
+				size="30"
+				default=""
+			/>
+		</fieldset>
+	</fields>
+</form>
