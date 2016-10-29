@@ -105,13 +105,13 @@ class plgContentFasttelegram extends JPlugin
 		}
 
 		$articleId	= $article->id; // get article id
-		$chek = $this::searchRating($articleId); // search for exsit record
-		$publish =0;
+		$chek = (count($this::searchRating($articleid)) > 0) ? 1 : 0 ; // search for exsit record
+		$publish = ($article->publish_down != "") ? 1 : 0; // get published
 		
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		
-		if (!isset($chek) && $chek == null ){	 // ========================= insert
+		if (!$chek){	 // ========================= insert
 				$columns = array('message', 'url','published','article_id');
 				$values = array($db->q($test['message']),$db->q($test['url']),$db->q($publish) ,$db->q($articleId));
 				$query->insert($db->qn('#__telegram'));
@@ -125,8 +125,7 @@ class plgContentFasttelegram extends JPlugin
 				$fields = array(
 					$db->qn('message') . ' = ' . $db->q($test['message']),
 					$db->qn('url') . ' = ' . $db->q($test['url']),
-					//$db->qn('published') . ' = ' . $db->q($publish)
-					$db->qn('published') . ' =  0'
+					$db->qn('published') . ' = ' . $db->q($publish)
 				);
 			
 				$conditions = array($db->qn('article_id') . ' = '. $db->q($articleId));
@@ -162,13 +161,11 @@ class plgContentFasttelegram extends JPlugin
 	public function searchRating($articleId)	{ 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-
-		$query->select('id');
+		$query->select('*');
 		$query->from('#__telegram');
 		$query->where('article_id =  ' . $db->quote($articleId));
 		$db->setQuery($query);
-		$result = $db->loadResult();
-
+		$result = $db->loadObjectlist();
 		return $result;
 	}
 
@@ -177,55 +174,39 @@ class plgContentFasttelegram extends JPlugin
 		$jinput = JFactory::getApplication()->input;
 		$contentcheak = $jinput->getString('option', '');
 
-			if ($contentcheak == "com_content") {
-				$application = JFactory::getApplication();
-	 			$session = JFactory::getSession(); 
+		if ($contentcheak == "com_content") {
+			$application = JFactory::getApplication();
+			$session = JFactory::getSession(); 
 
-		 	if (($session->get('successfullSavecontent') != null)) {
+			if (($session->get('successfullSavecontent') != null)) {
 
-		 		$articleid = intval($session->get( 'successfullSavecontent'));
+				$articleid = intval($session->get( 'successfullSavecontent'));
 
-		 		// cheak articleid in DB
-				$db     = JFactory::getDbo();
-			            $query  = $db->getQuery(true);
-			            $query->select('*');
-			            $query->from($db->qn('#__telegram'));
-			            $query->where($db->qn('article_id')." = ".$db->q($articleid));
-			            $query->where('published = 0');
-			            $db->setQuery($query);
-			            $count  = $db->loadRow();
+				if ($this::searchRating($articleid)[0]->published == 1) {
 
-		 		//send to telegram
-			           if ($count != null AND !empty($count[1])) {		           
-				 	require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
-					// $channel_id = "@testtrangell";
-					// $token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
+					$count  = $this::searchRating($articleid)[0]; // get data 
+
+					//send to telegram		           
+					require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
+					//$channel_id = "@testtrangell";
+					//$token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
 					$token = $this->params->get('token');
 					$channel_id = $this->params->get('channel_id');
 					$bot = new telegram_bot($token);
 					$testlink = JURI::current();
-					if (!empty($count[4])) {
-						$bot->send_photo($channel_id,$count[4],"{$count[1]}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+					if ($count->url != "") {
+						$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
 					}else {
-						$bot->send_message($channel_id,"{$count[1]}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+						$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
 					}
 					// Message in the  option = com_content
 					$application->enqueueMessage("مطلب {$articleid} به تلگرام ارسال شد. توجه کنید هر مطلب فقط یک بار ارسال می گردد.", 'Warning');
-
-					// update after send telegram
-					$query = $db->getQuery(true);
-					$query->clear();
-					$query->update('#__telegram');
-					$query->set($db->qn('published').' = 1'); 						
-					$query->where($db->qn('article_id')." = ".$db->q($articleid));
-					$db->setQuery((string)$query);
-					$db->query();
 				}
 			}
 
 			// clear active  session
 			if ($session->isActive('successfullSavecontent')) {
-			        $session->clear('successfullSavecontent');
+				$session->clear('successfullSavecontent');
 			}
 
 		}
