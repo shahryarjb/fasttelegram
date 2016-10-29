@@ -13,9 +13,7 @@
 	<files>
 		<folder>language</folder>
 		<folder>fasttelegram</folder>
-		<folder>rating</folder>
 		<filename plugin="fasttelegram">fasttelegram.php</filename>
-		<filename plugin="fasttelegram">telegram-bot-api.php</filename>
 		<filename>index.html</filename>
 	</files>
 	<config>
@@ -24,13 +22,13 @@
 				<field
 					name="token"
 					type="text"
-					label="PLG_FASTTELEGRAM_TOKEN_LABEL"
+					label="token"
 					description="PLG_FASTTELEGRAM_TOKEN_LABEL"
 					/>
 					<field
 					name="channel_id"
 					type="text"
-					label="PLG_FASTTELEGRAM_CHANNEL_ID_LABEL"
+					label="channel id"
 					description="PLG_FASTTELEGRAM_CHANNEL_ID_LABEL"
 					/>
 			</fieldset>
