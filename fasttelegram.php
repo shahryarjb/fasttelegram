@@ -126,8 +126,9 @@ class plgContentFasttelegram extends JPlugin
 					$db->qn('message') . ' = ' . $db->q($test['message']),
 					$db->qn('url') . ' = ' . $db->q($test['url']),
 					//$db->qn('published') . ' = ' . $db->q($publish)
-					$db->qn('published') . ' =  1'
+					$db->qn('published') . ' =  0'
 				);
+			
 				$conditions = array($db->qn('article_id') . ' = '. $db->q($articleId));
 				$query->update($db->qn('#__telegram'));
 				$query->set($fields);
@@ -195,7 +196,7 @@ class plgContentFasttelegram extends JPlugin
 			            $count  = $db->loadRow();
 
 		 		//send to telegram
-			           if ($count != null) {		           
+			           if ($count != null AND !empty($count[1])) {		           
 				 	require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
 					// $channel_id = "@testtrangell";
 					// $token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
@@ -215,7 +216,7 @@ class plgContentFasttelegram extends JPlugin
 					$query = $db->getQuery(true);
 					$query->clear();
 					$query->update('#__telegram');
-					$query->set($db->qn('published').' = 1'); 
+					$query->set($db->qn('published').' = 1'); 						
 					$query->where($db->qn('article_id')." = ".$db->q($articleid));
 					$db->setQuery((string)$query);
 					$db->query();
