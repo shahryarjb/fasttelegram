@@ -13,7 +13,9 @@
 	<files>
 		<folder>language</folder>
 		<folder>fasttelegram</folder>
+		<folder>rating</folder>
 		<filename plugin="fasttelegram">fasttelegram.php</filename>
+		<filename plugin="fasttelegram">telegram-bot-api.php</filename>
 		<filename>index.html</filename>
 	</files>
 	<config>
