@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		Joomla.Site
- * @subpackage	plg_content_contentforcrocodile
+ * @subpackage	plg_content_telegram fast telegram
  * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -67,7 +67,9 @@ class plgContentFasttelegram extends JPlugin
 		
 		if (!($form instanceof JForm))
 		{
-			$this->_subject->setError('JERROR_NOT_A_FORM');
+			$apperror = JFactory::getApplication();
+			$apperror->enqueueMessage("xml form have Problem", 'Warning');
+
 			return false;
 		}
 		
