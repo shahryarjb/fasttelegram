@@ -7,11 +7,10 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@trangell.com</authorEmail>
 	<authorUrl>https://trangell.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>joomla telegram https://trangell.com</description>
 
 	<files>
-		<folder>fasttelegram</folder>
 		<folder>rating</folder>
 		<filename plugin="fasttelegram">fasttelegram.php</filename>
 		<filename plugin="fasttelegram">telegram-bot-api.php</filename>
