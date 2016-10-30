@@ -188,19 +188,19 @@ class plgContentFasttelegram extends JPlugin
 
 					//send to telegram		           
 					require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
-					//$channel_id = "@testtrangell";
-					//$token = "280854533:AAFMycAWCbxGkM9LvMrsMTCIGghrzMLIRtw";
 					$token = $this->params->get('token');
 					$channel_id = $this->params->get('channel_id');
 					$bot = new telegram_bot($token);
 					$testlink = JURI::current();
-					if ($count->url != "") {
-						$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
-					}else {
-						$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+					if (!empty($count->message)) {
+						if ($count->url != "") {
+							$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+						}else {
+							$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+						}
 					}
 					// Message in the  option = com_content
-					$application->enqueueMessage("مطلب {$articleid} به تلگرام ارسال شد. توجه کنید هر مطلب فقط یک بار ارسال می گردد.", 'Warning');
+					$application->enqueueMessage("مطلب {$articleid}  ارسال شد. توجه داشته باشید اگر هر مطلب دوباره ویرایش و ذخیره شود مطلب فوق دوباره به تلگرام ارسال می گردد.", 'Warning');
 				}
 			}
 
