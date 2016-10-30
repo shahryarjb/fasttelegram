@@ -1,4 +1,5 @@
 <?php
+defined('JPATH_BASE') or die;
 class ReplyKeyboardMarkup{
 	public $keyboard;
 	public $resize_keyboard;

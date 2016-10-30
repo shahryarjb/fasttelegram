@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1" type="plugin" group="content" method="upgrade">
-	<name>plg_content_fasttelegram</name>
+	<name>Sending content to the telegram</name>
 	<author>trangell team</author>
 	<creationDate>June 2012</creationDate>
 	<copyright>(C) 2006 Open Source Matters. All rights reserved.</copyright>
