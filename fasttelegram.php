@@ -190,15 +190,27 @@ class plgContentFasttelegram extends JPlugin
 
 					//send to telegram		           
 					require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
+					require_once JPATH_SITE .'/components/com_content/helpers/route.php';
+
 					$token = $this->params->get('token');
 					$channel_id = $this->params->get('channel_id');
+					$seourl = $this->params->get('siteurl') . "/";
+
+					// cheak plugin 
+					if ($token == null || $channel_id == null || $seourl == null) {
+						$application->redirect('index.php', '<h2>لطفا تنظیمات پلاگین را انجام بدهید</h2>', $msgType='Error'); 
+					}
+					
+					if (empty($token) || empty($channel_id) || empty($seourl)) {
+						$application->redirect('index.php', '<h2>لطفا تنظیمات پلاگین را انجام بدهید</h2>', $msgType='Error');
+					}
+
 					$bot = new telegram_bot($token);
-					$testlink = JURI::current();
 					if (!empty($count->message)) {
 						if ($count->url != "") {
-							$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+							$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" .$seourl.ContentHelperRoute::getArticleRoute($articleid));
 						}else {
-							$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" . JURI::root(). "index.php/" . $articleid);
+							$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" .$seourl .ContentHelperRoute::getArticleRoute($articleid));
 						}
 					}
 					// Message in the  option = com_content
@@ -212,8 +224,5 @@ class plgContentFasttelegram extends JPlugin
 			}
 
 		}
-	} // end func onAfterDispatch
-
-
-	
+	} // end func onAfterDispatch	
 }

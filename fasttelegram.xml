@@ -32,6 +32,12 @@
 					label="channel id"
 					description=""
 					/>
+					<field
+					name="siteurl"
+					type="text"
+					label="site url"
+					description=""
+					/>
 			</fieldset>
 		</fields>
 	</config>
