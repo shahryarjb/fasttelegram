@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla - > Site and Administrator payment info
+ * @package     Joomla - > Site FastTelegram
  * @copyright   trangell team => https://trangell.com
  * @copyright   Copyright (C) 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt

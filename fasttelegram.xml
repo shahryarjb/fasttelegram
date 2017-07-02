@@ -2,12 +2,12 @@
 <extension version="3.1" type="plugin" group="content" method="upgrade">
 	<name>Sending content to the telegram</name>
 	<author>trangell team</author>
-	<creationDate>June 2012</creationDate>
-	<copyright>(C) 2006 Open Source Matters. All rights reserved.</copyright>
+	<creationDate>July 2017</creationDate>
+	<copyright>(C) 2017 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@trangell.com</authorEmail>
 	<authorUrl>https://trangell.com</authorUrl>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<description>joomla telegram https://trangell.com</description>
 
 	<files>
@@ -15,6 +15,7 @@
 		<filename plugin="fasttelegram">fasttelegram.php</filename>
 		<filename plugin="fasttelegram">telegram-bot-api.php</filename>
 		<filename>index.html</filename>
+		<filename>urlrouter.php</filename>
 		<folder>sql</folder>
 	</files>
 	<config>
