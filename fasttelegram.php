@@ -1,29 +1,18 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	plg_content_telegram fast telegram
- * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Joomla - > Site and Administrator payment info
+ * @copyright   trangell team => https://trangell.com
+ * @copyright   Copyright (C) 2017 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
+if (!class_exists('ContentHelperRoute')) {
+    require_once JPATH_SITE .'/plugins/content/fasttelegram/urlrouter.php';
+}
 
-class plgContentFasttelegram extends JPlugin
-{
-/**
-	 * Example after save content method
-	 * Article is passed by reference, but after the save, so no changes will be saved.
-	 * Method is called right after the content is saved
-	 *
-	 * @param   string   $context  The context of the content passed to the plugin (added in 1.6)
-	 * @param   object   $article  A JTableContent object
-	 * @param   boolean  $isNew    If the content is just about to be created
-	 *
-	 * @return  boolean   true if function not enabled, is in frontend or is new. Else true or
-	 *                    false depending on success of save function.
-	 *
-	 * @since   1.6
-	 */
+
+class plgContentFasttelegram extends JPlugin {
 	public function __construct(& $subject, $config) {
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
@@ -190,27 +179,26 @@ class plgContentFasttelegram extends JPlugin
 
 					//send to telegram		           
 					require_once JPATH_SITE .'/plugins/content/fasttelegram/telegram-bot-api.php';
-					require_once JPATH_SITE .'/components/com_content/helpers/route.php';
+					//require_once JPATH_SITE .'/components/com_content/helpers/route.php';
 
 					$token = $this->params->get('token');
 					$channel_id = $this->params->get('channel_id');
-					$seourl = $this->params->get('siteurl') . "/";
-
+					
 					// cheak plugin 
-					if ($token == null || $channel_id == null || $seourl == null) {
+					if ($token == null || $channel_id == null) {
 						$application->redirect('index.php', '<h2>لطفا تنظیمات پلاگین را انجام بدهید</h2>', $msgType='Error'); 
 					}
 					
-					if (empty($token) || empty($channel_id) || empty($seourl)) {
+					if (empty($token) || empty($channel_id)) {
 						$application->redirect('index.php', '<h2>لطفا تنظیمات پلاگین را انجام بدهید</h2>', $msgType='Error');
 					}
 
 					$bot = new telegram_bot($token);
 					if (!empty($count->message)) {
 						if ($count->url != "") {
-							$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" .$seourl.ContentHelperRoute::getArticleRoute($articleid));
+							$bot->send_photo($channel_id,$count->url,"{$count->message}\r\n لینک مطلب : \r\n" .$this->getConvertLinks($articleid));
 						}else {
-							$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" .$seourl .ContentHelperRoute::getArticleRoute($articleid));
+							$bot->send_message($channel_id,"{$count->message}\r\n لینک مطلب : \r\n" .$this->getConvertLinks($articleid));
 						}
 					}
 					// Message in the  option = com_content
@@ -225,4 +213,45 @@ class plgContentFasttelegram extends JPlugin
 
 		}
 	} // end func onAfterDispatch	
+	public static function getLinkDb($articleid) {
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		//------------------------------
+		$query->select('c.id,c.catid,c.title,c.state');
+		$query->from('#__content as c');
+		$query->where($db->qn('c.id') . ' = ' . $db->q($articleid));
+		$query->where($db->qn('c.state').' = 1');
+		$db->setQuery($query);
+		$rows = $db->loadObject();
+		
+		
+		if (!empty($rows)) {
+			return $rows;
+		}
+		else {
+			return Null;
+		}
+		
+	}
+	
+	function getConvertLinks($id) {   
+		$link = $this->getLinkDb($id);
+		//--------------------------------
+		$app    = JApplication::getInstance('site');
+		$router = $app->getRouter();
+		
+		//--------------------------------
+		
+		if ($link != null) {
+			$uri = $router->build((ContentHelperRoute::getArticleRoute($link->id,$link->catid)).'<br>');
+			$parsed_url = $uri->toString();
+			$temp1= preg_replace("@(.*)/administrator/@","", $parsed_url);
+			$outputLink = JURI::root().$temp1;
+		// /joomla-1-test/administrator/home/13-فاکتورهای-پرداخت-نشده
+			return $outputLink;
+		}
+		else {
+			return null;
+		}
+	}
 }
